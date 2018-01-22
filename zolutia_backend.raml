@@ -1,0 +1,2205 @@
+#%RAML 0.8
+title: Zolutia Development
+version: 1.0
+baseUri: http://www.zolutia.com/api/v1
+
+
+/vets:
+  /{vet_id}:
+    displayName: Vet
+    description: Vet Portal Endpoints  
+    get:
+      description: Get vet details
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "user_id": "59d196dac3ebad4aa4566c95",
+                  "image_url": "example.com/vet.jpg",
+                  "hospital id": "59d196dac3ebad4aa4566c96",
+                  "first_name": "Jon",
+                  "last_name": "Dow",
+                  "email_address": "jondow@zolutia.com",
+                  "phone": {
+                    "work": "+1 555 7000000",
+                    "cell": "+1 555 8000000"
+                  },
+                  "address": {
+                    "street_1": "1, Grove st.",
+                    "street_2": "",
+                    "city": "Los Santos",
+                    "state": "San Andreas",
+                    "zip": "77777",
+                    "zip4": ""
+                  },
+                  "dea": "",
+                  "npi": "",
+                  "state_license": ""
+                }
+    put:
+      description: Update data for this vet (Body will contain only fields that have changed)
+      body: 
+        application/json:
+          example: |
+            {
+              "user_id": "59d196dac3ebad4aa4566c97",
+              "hospital_id": "59d196dac3ebad4aa4566c98",
+              "first_name": "Jon",
+              "last_name": "Dow",
+              "email_address": "jondow@zolutia.com",
+              "phone": {
+                "work": "+1 555 7000000",
+                "cell": "+1 555 8000000"
+              },
+              "address": {
+                "street_1": "1, Grove st.",
+                "street_2": "",
+                "city": "Los Santos",
+                "state": "San Andreas",
+                "zip": "77777",
+                "zip4": ""
+              },
+              "dea": "",
+              "npi": "",
+              "state_license": ""
+            }
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {"updated": true}
+  /{vet_id}/search:
+    displayName: Search
+    description: Vet Portal Search Endpoint 
+    get:
+      description: Search results with names or products
+      queryParameters: 
+        type:
+          required: true
+          example: client/product
+        q:
+          required: true
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "results": [
+                    {
+                      "client_name": "Ronald Statler",
+                      "client_email": "RonaldTStatler@teleworm.us",
+                      "client_id": "59d196dac3ebad4aa4566d01"
+                    },
+                    {
+                      "client_name": "Daniel Attwood",
+                      "client_email": "DanielNAttwood@rhyta.com",
+                      "client_id": "59d196dac3ebad4aa4566d02"
+                    }
+                  ]
+                }
+
+  /{vet_id}/products:
+    displayName: Formulary
+    description: Get the formulary for the current vet 
+    get:
+      queryParameters: 
+        filter:
+          description: Filter the formulary by type, category, brands etc
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "results": [
+                    {
+                      "available_options": [
+                        {
+                          "price": "37.64",
+                          "strength": "6 pack"
+                        },
+                        {
+                          "price": "70.02",
+                          "strength": "12 pack"
+                        }
+                      ],
+                      "product_id": "59d196dac3ebad4aa4566d03",
+                      "ndc": "",
+                      "product_name": "Sentinel Flavor Tabs",
+                      "type": "RX",
+                      "manufacturer_name": "Novartis Animal Health US, Inc",
+                      "stc": "",
+                      "category": "Caplets",
+                      "image_url": "https://www.1800petmeds.com/images/products/group/Sentinel_group_420.jpg",
+                      "description": "58198-5024-6"
+                    }
+                  ]
+                }
+  /{vet_id}/products/{product_id}:
+    displayName: ProductDetails
+    description: Vet Portal Product Details Endpoint 
+    get:
+      description: Get data of a product with available options from the hospital formulary
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "_id": "59d196dac3ebad4aa4566d04",
+                  "product_name": "Keratex Cooling Gel",
+                  "image_url": "https://www-jefferspet-weblinc.netdna-ssl.com/product_images/adams-plus-f-t-spray-32oz/5327ea399fa260a47b0000e1/zoom.jpg?c=1417150581",
+                  "ndc": 77757931,
+                  "stc": 41797797,
+                  "description": "Adams Plus Flea and Tick Spray kills adult fleas, flea eggs, flea larvae, ticks and repels mosquitoes. Flea eggs and larvae sprayed with Adams Plus Flea and Tick Spray will not grow into adults. Adams Plus Flea and Tick Spray combines the adult flea killing power of etofenprox with the long-lasting flea egg-killing power of S-Methoprene Insect Growth Regulator. This highly effective combination of ingredients provides quick relief from biting fleas and continuous killing of flea egg laid on the animal, breaking the flea life cycle.",
+                  "type": "OTC",
+                  "category": "Spray",
+                  "available_options": [
+                    {
+                      "strength":"100",
+                      "price":"19.99"
+                    },
+                    {
+                      "strength":"50",
+                      "price":"9.99"
+                    }
+                  ],
+                  "manufacturer_name": "Cipla"
+                }
+  /{vet_id}/clients/{client_id}:
+    displayName: Client
+    description: Vet Portal Client Details Endpoint 
+    get:
+      description: Get client details
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "_id": "59d196dac3ebad4aa4566d04",
+                  "user_id": "59d196dac3ebad4aa4566d05",
+                  "pims_id": "59d196dac3ebad4aa4566d07",
+                  "first_name": "Annie",
+                  "last_name": "Taylor",
+                  "gender": "F",
+                  "date_of_birth": "1970-08-27",
+                  "email_address": "AnnieMTaylor@armyspy.com",
+                  "phone": "651-340-1069",
+                  "patients": [
+                    {
+                      "patient_id": "59d196dac3ebad4aa4566d06",
+                      "patient_name": "Tommy"
+                    },
+                    {
+                      "patient_id": "59d196dac3ebad4aa4566d08",
+                      "patient_name": "Spot"
+                    }
+                   ]
+                  }
+  /{vet_id}/treatment_plans:
+    displayName: Treatment Plans
+    description: Vet Portal Treament Plans Endpoint 
+    get:
+      description: Get a list of all treatment plans for a vet
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "results": [
+                    {
+                      "_id": "59d196dac3ebad4aa4566d09",
+                      "vet_id": "59d196dac3ebad4aa4566d10",
+                      "treatment_plan_name": "Cat Treatment",
+                      "boxes": [
+                        {
+                          "box_price": "9.99",
+                          "shipping_date": "2017-10-19",
+                          "box_no": "1",
+                          "box_id": "",
+                          "items": [
+                            {
+                              "product_id": "59d196dac3ebad4aa4566d12",
+                              "product_name": "Aspirine",
+                              "size": "",
+                              "quantity": "4",
+                              "instructions": "",
+                              "notes": "",
+                              "product_price": "5.99"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+    post:
+      description: Create a new treatment Plan
+      body: 
+        application/json:
+          example: |
+            {
+              "vet_id": "59d196dac3ebad4aa4566d14",
+              "treatment_plan_name": "Cat Treatment",
+              "boxes": [
+                {
+                  "box_price": "9.99",
+                  "shipping_date": "2017-10-18",
+                  "box_no": "",
+                  "box_id": "",
+                  "items": [
+                    {
+                      "product_id": "59d196dac3ebad4aa4566d15",
+                      "product_name": "Hugs",
+                      "size": "",
+                      "quantity": "1000",
+                      "instructions": "",
+                      "notes": "",
+                      "product_price": "8.99"
+                    }
+                  ]
+                }
+              ]
+            }
+  /{vet_id}/treatment_plans/{treatment_plan_id}:
+    displayName: Treatment Plan Details
+    get:
+      description: Get details of a treatment plan
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "_id": "",
+                  "vet_id": "",
+                  "treatment_plan_name": "Cat Treatment",
+                  "boxes": [
+                    {
+                      "box_price":"",
+                      "shipping_date":"",
+                      "box_no":"",
+                      "box_id":"",
+                      "items": [
+                        {
+                          "product_id":"",
+                          "product_name":"",
+                          "size":"",
+                          "quantitiy":"",
+                          "instructions":"",
+                          "notes":"",
+                          "product_price":""
+                        }
+                      ]
+                    }
+                  ]
+                }
+    put:
+      description: Update a treatment plan
+      body: 
+        application/json:
+          example: |
+            {
+              "_id": "",
+              "vet_id": "",
+              "treatment_plan_name": "Cat Treatment",
+              "boxes" : [
+                {
+                  "box_price":"",
+                  "shipping_date":"",
+                  "box_no":"",
+                  "box_id":"",
+                  "items": [
+                    {
+                      "product_id":"",
+                      "product_name":"",
+                      "size":"",
+                      "quantity":"",
+                      "instructions":"",
+                      "notes":"",
+                      "product_price":""
+                    }
+                  ]
+                }
+              ]
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"updated" : true}
+    delete:
+      description: Remove a treatment plan
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"deleted" : true}
+      
+  
+  /{vet_id}/patients:
+    displayName: Vet's patients
+    get:
+      description: Get all vet's patients
+      queryParameters:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "patients": [
+                    {
+                      "_id": "59d17ea77b0cfa0001684f33",
+                      "age": "4",
+                      "breed": "German Shepherd",
+                      "created_on": "2017-10-01 23:47:51.559000",
+                      "weight": "99",
+                      "vet_id": "59d0430c0d6fca1448956297",
+                      "birthday": "2013-04-28 00:00:00",
+                      "hospital_id": "59d04ca30d6fca3b9d23756f",
+                      "client_id": "59d173fe847d5c0001fc9806",
+                      "name": "Spot",
+                      "species": "Canine",
+                      "color": "Red",
+                      "image": "https://i.redd.it/wup1sjd2cjix.jpg",
+                      "is_spayed/neutered": false,
+                      "True": false
+                    },
+                    {
+                      "_id": "59d1b94c1d8dd6000170b457",
+                      "vet_id": "59d0430c0d6fca1448956297",
+                      "age": "2",
+                      "weight": "45",
+                      "created_on": "2017-10-02 03:58:04.039000",
+                      "client_id": "59d173fe847d5c0001fc9806",
+                      "birthday": "2015-04-28 00:00:00",
+                      "name": "Tommy",
+                      "species": "Canine",
+                      "hospital_id": "59d04ca30d6fca3b9d23756f",
+                      "breed": "Labrador",
+                      "color": "Red",
+                      "image": "https://i.redd.it/wup1sjd2cjix.jpg",
+                      "is_spayed/neutered": false,
+                      "True": false
+                    }
+                  ]
+                }
+
+  /{vet_id}/patients/{patient_id}/orders:
+    displayName: Vet's patients's orders
+    get:
+      description: Get all vet's patient's orders
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "orders": [
+                    {
+                      "_id": "59d199de7b0cfa0001684f35",
+                      "patient_id": "59d17ea77b0cfa0001684f33",
+                      "created_on": "2017-10-02 01:43:58.406000",
+                      "vet_id": "59d0430c0d6fca1448956297",
+                      "shipping_address": {
+                        "street_1": "9 Garrison Ave",
+                        "zip4": "8114",
+                        "city": "Jersey City",
+                        "street_2": "#34",
+                        "zip": "07306",
+                        "state": "NJ"
+                      },
+                      "tax": "2.83",
+                      "shipping_amount": "5.99",
+                      "subtotal_price": "40.38",
+                      "order_contents": [
+                        {
+                          "auto_refill": "",
+                          "refills": "",
+                          "expires": "",
+                          "strength": "",
+                          "quantity": "",
+                          "product_id": "59d04ca30d6fca3b9d23758c"
+                        }
+                      ],
+                      "hospital_id": "59d04ca30d6fca3b9d23756f",
+                      "client_id": "59d173fe847d5c0001fc9806",
+                      "shipping_method": "Ground",
+                      "total_price": "49.30"
+                    }
+                  ]
+                }
+  /{vet_id}/orders:
+    displayName: Vet's orders
+    get:
+      description: Get vet's orders
+      queryParameters:
+        type:
+          example: RX
+        status:
+          example: pending
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  
+                }
+    /{order_id}:
+      put:
+        description: Update an order
+        body:
+          application/json:
+            example: |
+              {
+                "tax": "3.15",
+                "total_price": "51.60"
+              }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"updated": true}
+
+/payments:
+  displayName: Payment
+  description: Universal Payments Endpoint 
+  post:
+    description: Process payment for an order 
+    body: 
+      application/json:
+        example: |
+          {
+            "order_id":"59d196dac3ebad4aa4566d18",
+            "credit_card_number":"4556 4203 8779 7939",
+            "credit_card_name":"JESSICA JEROME",
+            "credit_card_expiry_month":"04",
+            "credit_card_expiry_year":"18",
+            "credit_card_cvv":"233"
+          }
+
+/orders:
+  displayName: Orders
+  description: Order Creation Endpoint 
+  post:
+    description: Create a new order 
+    body: 
+      application/json:
+        example: |
+          {
+            "vet_id": "59d196dac3ebad4aa4566d20",
+            "client_id": "59d196dac3ebad4aa4566d21",
+            "patient_id": "59d196dac3ebad4aa4566d22",
+            "hospital_id": "59d196dac3ebad4aa4566d23",
+            "order_contents": [
+              {
+                "product_id": "59d196dac3ebad4aa4566d24",
+                "strength": "100",
+                "quantity": 12,
+                "expires": "2017-09-28",
+                "auto_refill": true,
+                "refills": 2,
+                "product_price": "15.00"
+              },
+              {
+                "product_id": "59d196dac3ebad4aa4566d25",
+                "strength": "50",
+                "quantity": 12,
+                "expires": "2017-09-28",
+                "auto_refill": false,
+                "refills": 2,
+                "product_price": "7.99"
+              }
+            ],
+            "subtotal_price": "22.99",
+            "shipping_method": "Ground",
+            "shipping_amount": "0.99",
+            "shipping_address": {
+              "street_1": "302 Bryan Avenue",
+              "street_2": "#15",
+              "city": "Roseville",
+              "state": "MN",
+              "zip": "55113",
+              "zip4": "6335"
+            },
+            "tax": "7.99",
+            "total_price": "30.99"
+          }
+  
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {"created": true}
+/clients:
+  displayName: Client
+  description: Client Creation Endpoint 
+  post:
+    description: Add a new client 
+    body: 
+      application/json:
+        example: |
+          {
+            "user_id": "59d196dac3ebad4aa4566d30",
+            "pims_id": "59d196dac3ebad4aa4566d31",
+            "first_name": "Lauren",
+            "last_name": "Mitchell",
+            "email_address": "LaurenAMitchell@armyspy.com",
+            "phone": "228-275-9585"
+          }
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {"client_id": "59d196dac3ebad4aa4566d32"}
+              
+  /{client_id}:
+    get:
+      description: Get client data
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "first_name": "Dawson",
+                  "user_id": "5a0d546a3c4588acad21a318",
+                  "email_address": "dexterxtorm+5@gmail.com",
+                  "pims_id": "59d0430c0d6fca1448956297",
+                  "last_name": "Kalliam",
+                  "phone": {
+                    "cell": "(999) 999-9999"
+                  },
+                  "gender": "M",
+                  "date_of_birth": "1985-10-11 00:00:00",
+                  "shipping_address": {
+                    "street_2": "34",
+                    "zip4": "8114",
+                    "city": "Jersey City",
+                    "zip": "07306",
+                    "state": "NJ",
+                    "street_1": "9 Garrison Ave"
+                  }
+                }  
+    put:
+      description: Update client data
+      body:
+        application/json:
+          example: |
+            {
+              "first_name": "Dawson",
+              "last_name": "Kalliam",
+              "email_address": "dexterxtorm5@gmail.com",
+              "phone": {
+                "work": "(999) 777-7777"
+              },
+              "gender": "M",
+              "date_of_birth": "1985-10-11",
+              "shipping_address": {
+                "street_1": "9 Garrison Ave",
+                "street_2": "34",
+                "zip": "07306",
+                "zip4": "8114",
+                "city": "Jersey City",
+                "state": "NJ"
+              },
+              "billing_address": {
+                "street_1": "9 Garrison Ave",
+                "street_2": "34",
+                "zip": "07306",
+                "zip4": "8114",
+                "city": "Jersey City",
+                "state": "NJ"
+              }
+            }
+            
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"updated": true}
+    /care_team:
+      description: Client's care team
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "vets": [
+                      {
+                        "phone": {
+                          "cell": "(201) 736-7833",
+                          "work": "2017367833"
+                        },
+                        "image_url": "http://www.nndb.com/people/965/000043836/robert-jordan.jpg",
+                        "email_address": "test@droicelabs.com",
+                        "address": {
+                          "zip4": "",
+                          "street_1": "Roast Meat Hill Rd",
+                          "state": "CT",
+                          "street_2": "",
+                          "city": "Killingworth",
+                          "zip": "06419"
+                        },
+                        "vet_id": "59d0430c0d6fca1448956297",
+                        "name": "Robert Jordan"
+                      }
+                    ],
+                    "pharmacies": []
+                  }
+    /orders:
+      description: Client's orders
+      get:
+        queryParameters:
+          type:
+            description: one_time or subscription
+            type: string
+            required: false
+            example: subscription
+            default: one_time
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "orders": [
+                        {
+                          "shipping_amount": "5.99",
+                          "shipping_method": "Ground",
+                          "shipping_date": "2017-09-24 00:00:00",
+                          "delivered_date": "2017-09-26 00:00:00",
+                          "shipping_address": {
+                            "street_2": "34",
+                            "zip4": "8114",
+                            "city": "Jersey City",
+                            "zip": "07306",
+                            "state": "NJ",
+                            "street_1": "9 Garrison Ave"
+                          },
+                          "tax": "2.83",
+                          "patient_id": "5a059b956186740001000357",
+                          "hospital_id": "59d04ca30d6fca3b9d23756f",
+                          "client_id": "5a059a22618674000100033b",
+                          "order_status": "Delivered",
+                          "order_type": "one_time",
+                          "payment_amount": "46.99",
+                          "payment_status": "Approved",
+                          "payment_last_4": "1234",
+                          "payment_expiry": "1019",
+                          "payment_auth_code": "123456",
+                          "payment_customer_id": "654321",
+                          "order_number": 23145,
+                          "vet_id": "59d0430c0d6fca1448956297",
+                          "total_price": "46.99",
+                          "order_contents": [
+                            {
+                              "refills": 1,
+                              "expires": "2017-11-16 00:00:00",
+                              "quantity": 1,
+                              "auto_refill": true,
+                              "type": "OTC",
+                              "strength": "4 oz",
+                              "price": "29.99",
+                              "product_id": "59d19179c3ebad4aa4566c90"
+                            },
+                            {
+                              "refills": 1,
+                              "expires": "2017-11-30 00:00:00",
+                              "quantity": 2,
+                              "auto_refill": true,
+                              "type": "OTC",
+                              "product_id": "59d192fac3ebad4aa4566c92",
+                              "strength": "7.5 gm",
+                              "price": "6.89"
+                            }
+                          ],
+                          "subtotal_price": "29.99",
+                          "comments": "",
+                          "is_satisfied": false,
+                          "feedback": {
+                            "is_feedback_read": false,
+                            "is_satisfied": true,
+                            "comments": "fdsfd",
+                            "timestamp": "2017-11-16 19:17:20.977000"
+                          },
+                          "order_id": "5a0d4a0907c71b53c4a3dffd",
+                          "patient_name": "Rocky"
+                        }
+                      ]
+                    }
+      /{order_id}:
+        description: Update order feedback
+        put:
+          body:
+            application/json:
+              example: |
+                {
+                  "feedback": {
+                    "comments": "Good quality, fast delivery, 8/8 m8",
+                    "is_satisfied": true
+                  }
+                }
+    /patients:
+      description: Client's pets (patients) data
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "patients": [
+                      {
+                        "breed": "Siamese",
+                        "birthday": "2013-11-16 00:00:00",
+                        "species": "feline",
+                        "hospital_id": "59d04ca30d6fca3b9d23756f",
+                        "gender": "female",
+                        "age": "4",
+                        "name": "Poppy",
+                        "vet_id": "59d0430c0d6fca1448956297",
+                        "client_id": "5a059a22618674000100033b",
+                        "weight": "11",
+                        "patient_id": "5a059a22618674000100033e"
+                      }
+                    ]
+                  }
+      /{patient_id}:
+        delete:
+          description: Remove patient from client
+          responses:
+            200:
+              body: 
+                application/json:
+                  example: |
+                    {"deleted": true}
+    /payments:
+      description: Client's payments
+      get:
+        description: Get credit card details from latest order or usaepay customer number
+        responses:
+          204:
+            description: No content
+          200:
+            body:
+              application/json:
+                example: |
+                  {}
+      post:
+        description: Add new payment details for this client
+        body:
+          application/json:
+            example: |
+              {
+                "card": {
+                  "card_number": "1234567812345678",
+                  "expiry_date": "10/22",
+                  "cardholder_name": "MR. ROBOT"
+                }
+              }
+    /subscriptions:
+      description: Client's subscriptions
+      get:
+        description: Get the list of active susbcriptions for this client
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "subscriptions": {
+                      [
+                        {
+                          "subscription_id": "",
+                          "pet_owner_id": "",
+                          "vet_id": "",
+                          "animal_id": "",
+                          "hospital_id": "",
+                          "create_on": "",
+                          "start_date": "",
+                          "pause_date": "",
+                          "care_plan_status": "",
+                          "care_plan": {
+                            "boxes": [
+                              {
+                                "box_id": "",
+                                "box_name": "",
+                                "items": [
+                                  {
+                                    "product_id": "",
+                                    "product_size": "",
+                                    "quantity": "",
+                                    "instructions": "",
+                                    "notes": "",
+                                    "feedback": ""
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "payment_auth_code": "",
+                          "payment_customer_id": "",
+                          "payment_frequency": "",
+                          "last_modified": "",
+                          "next_care_box_id": "",
+                          "next_care_box_date": ""
+                        }
+                      ]
+                    }
+                  }
+    
+/patients:
+  displayName: Patient
+  description: Patient Creation Endpoint 
+  post:
+    description: Add a new patient 
+    body: 
+      application/json:
+        example: |
+          {
+            "patients": [
+              {
+                "name": "Spot",
+                "client_id": "59d196dac3ebad4aa4566d32",
+                "vet_id": "59d196dac3ebad4aa4566d33",
+                "hospital_id": "59d196dac3ebad4aa4566d34",
+                "species": "Canine",
+                "gender": "Male",
+                "breed": "Labrador",
+                "age":"2",
+                "birthday": "2015-04-28",
+                "weight": "44"
+              },
+              {
+                "name": "Grumpy",
+                "client_id": "59d196dac3ebad4aa4566d35",
+                "vet_id": "59d196dac3ebad4aa4566d33",
+                "hospital_id": "59d196dac3ebad4aa4566d34",
+                "species": "Cat",
+                "gender": "Male",
+                "breed": "Siamese",
+                "age":"5",
+                "birthday": "2013-01-02",
+                "weight": "15"
+              }
+            ]
+          }
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {"patient_id": "59d196dac3ebad4aa4566d36"}
+/hospitals:
+  displayName: Hospitals
+  /{hospital_id}:
+    displayName: Hospital Details
+    description: Get the details of a hospital 
+    get:
+      description: Get data for this hospital
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "name" : "Apollo", 
+                  "email" : "contact@apollo.com", 
+                  "phone" : "+12017367833", 
+                  "address" : {
+                      "street_1" : "123 Hyper Drive", 
+                      "street_2" : "Suite 99999", 
+                      "city" : "New York", 
+                      "state" : "NY", 
+                      "zip" : "10001", 
+                      "zip4" : "1234"
+                  }
+                }
+  /{hospital_id}/vets:
+    get:
+      description: Get all vets for a hospital
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "vets": [
+                    {
+                      "_id": "59d0430c0d6fca1448956297",
+                      "phone": {
+                        "cell": "9292911178"
+                      },
+                      "email_address": "robertklossner@gmail.com"
+                    }
+                  ]
+                }
+  /{hospital_id}/vets/{vet_id}:
+    put:
+      description: Update hospital admin priviliges
+      body:
+        application/json:
+          example: |
+            {"is_hospital_admin": true}
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"updated": true}
+  /{hospital_id}/products:
+    get:
+      description: Get products for the hospital
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "products": [
+                    {
+                      "product_id": "59d196dac3ebad4aa4566c95",
+                      "available_options": [
+                        {
+                          "price": "37.6",
+                          "strength": "6 pack"
+                        },
+                        {
+                          "price": "80.00",
+                          "strength": "12 pack"
+                        }
+                      ]
+                    }
+                  ]
+                }
+    /{product_id}:
+      put:
+        body:
+          application/json:
+              example: |
+                {
+                  "strength": "18 pack",
+                  "retail_price": "150.00"
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                  example: |
+                    {
+                      "updated": true
+                    }
+/users:
+  /login:
+    description: User login
+    get:
+      queryParameters:
+        login:
+          type: string
+          required: true
+          example: test@zolutia.com
+        password:
+          type: string
+          required: true
+          example: m$73f3eD
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "user_id": "59d0430c0d6fca1448956123",
+                  "role": "vet",
+                  "vet_id": "59d0430c0d6fca1448956297"
+                }
+        403:
+          description: Invalid credentials
+        500:
+          description: Internal DB error, server can't match user with his role
+  /reset:
+    description: Change password
+    put:
+      body:
+        application/json:
+          example: |
+            {
+              "login": "test@zolutia.com",
+              "password": "m$73f3eD",
+              "new_password": "De3f37$m"
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"updated": true}
+        403:
+          description: Invalid credentials
+  /confirm:
+    description: Change user registration
+    post:
+      body: 
+        application/json:
+          example: |
+            {
+              "token": "2a32009c-735b-4df5-b898-f2c427f54a87",
+              "password": "abcd123"
+            }
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "confirmed": true
+                }
+  /forgot:
+    get:
+      description: Initiate forgot password reset
+      queryParameters: 
+        email_address:
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "email_address": "pharmacy@zolutia.com",
+                  "token": "2a32009c-735b-4df5-b898-f2c427f54a87"
+                }
+    post:
+      description: Update password
+      body: 
+        application/json:
+          example: |
+            {
+              "token": "2a32009c-735b-4df5-b898-f2c427f54a87",
+              "password": "abcd1234"
+            }
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                "reset": true
+                }
+  /check_token:
+    get:
+      description: Verify registration/forgot password token
+      queryParameters: 
+        token:
+          required: true
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                  "user_id": "5a5a351c61d1c90001bbdec0",
+                  "role": "vet",
+                  "vet_id": "5a5a351ca85ce5001d88bdb7",
+                  "name": "Test Vet",
+                  "email": "vet@zolutia.com"
+                }
+
+/pharmacies:
+  /{pharmacy_id}:
+    description: Get pharmacy details
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "name": "Dr. Susan Klossner",
+                  "email": "jklossner@auvc.com",
+                  "phone": "(714) 534-8378",
+                  "address": {
+                      "street_1": "710 W 5th St",
+                      "city": "Austin",
+                      "state": "TX",
+                      "zip": "78701"
+                  }
+                }
+    put:
+      body:
+        application/json:
+          example: |
+            {
+              "name": "Dr. Susan Cumberbatch",
+              "email": "jkcumberbatch@auvc.com",
+              "phone": "(800) 555-3535",
+              "address": {
+                  "street_1": "14 W 6th St"
+              }
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"updated": true}
+    /orders:
+      description: List of orders for this pharmacy
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "orders": [
+                      {
+                        "order_status": "delivered",
+                        "order_number": 12268,
+                        "order_id": "5a0d458f07c71b53c4a3dff9",
+                        "client_name": "Dawson Kalliam",
+                        "client_email": "test_client@droicelabs.com",
+                        "vet_name": "Robert Jordan",
+                        "hospital_name": "Apollo"
+                      }
+                    ]
+                  }
+      /{order_id}:
+        description: Order details
+        get:
+          responses:
+            404:
+              description: Not found
+            200:
+              body:
+                application/json:
+                  example: |
+                    {
+                      "shipping_amount": "5.99",
+                      "shipping_method": "Ground",
+                      "shipping_date": "2017-09-17 00:00:00",
+                      "delivered_date": "2017-09-20 00:00:00",
+                      "shipping_address": {
+                        "street_2": "34",
+                        "zip4": "8114",
+                        "city": "Jersey City",
+                        "zip": "07306",
+                        "state": "NJ",
+                        "street_1": "9 Garrison Ave"
+                      },
+                      "tax": "2.83",
+                      "patient_id": "5a059b956186740001000357",
+                      "hospital_id": "59d04ca30d6fca3b9d23756f",
+                      "client_id": "5a059a22618674000100033b",
+                      "order_status": "delivered",
+                      "order_type": "subscription",
+                      "box_name": "Box 01",
+                      "subscription_id": "59d0430c0d6fca1448956297",
+                      "vet_id": "59d0430c0d6fca1448956297",
+                      "total_price": "66.99",
+                      "order_contents": [
+                        {
+                          "auto_refill": true,
+                          "expires": "2017-11-16 00:00:00",
+                          "quantity": 1,
+                          "refills": 1,
+                          "type": "OTC",
+                          "price": "29.99",
+                          "strength": "4 oz",
+                          "product_name": "Arthro-IONX",
+                          "product_id": "59d19179c3ebad4aa4566c90",
+                          "image_url": "https://images-na.ssl-images-amazon.com/images/I/4197CuIS0gL.jpg"
+                        }
+                      ],
+                      "subtotal_price": "29.99",
+                      "feedback": {
+                        "comments": "Well, 'twas gooood :D",
+                        "is_satisfied": true,
+                        "timestamp": "2017-11-16 10:24:09.645000",
+                        "is_feedback_read": false
+                      },
+                      "order_number": 12268,
+                      "pharmacy_id": "5a13f6679851a3fb0ecbcb5e",
+                      "client_name": "Dawson Kalliam",
+                      "client_email": "test_client@droicelabs.com",
+                      "client_phone": {
+                        "cell": "(999) 999-9999"
+                      },
+                      "patient_name": "Rocky",
+                      "vet_name": "Robert Jordan",
+                      "hospital_name": "Apollo"
+                    }
+        put:
+          body:
+            application/json:
+              example: |
+                {
+                  "status": "shipped",
+                  "tracking_number": "12345678"
+                }
+          responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    {"updated": true}
+/admin:
+  displayName: Admin Portal
+  /hospitals:
+    get:
+      queryParameters:
+        offset:
+          required: false
+          example: 10
+        limit:
+          required: false
+          example: 5
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "hospitals": [
+                    {
+                      "name": "Apollo",
+                      "pims_id": "123456",
+                      "owner_name": "Jeff",
+                      "parent_account": "Apollo Care Hospitals",
+                      "clinic_id": "123456",
+                      "email": "contact@apollo.com",
+                      "phone": "12017367834",
+                      "address": {
+                        "street_1": "123 Hyper Drive",
+                        "street_2": "Suite 99999",
+                        "city": "New York",
+                        "state": "NY",
+                        "zip": "10001",
+                        "zip4": "1234"
+                      },
+                      "pharmacies": {
+                        "502b": "5a2ad1bcf09d2051c0b48e81",
+                        "Retail": "5a13f6679851a3fb0ecbcb5e",
+                        "Compounded": "5a3625cb5474eb0010955aa6",
+                        "502b_name": "CVS Pharmacy",
+                        "Retail_name": "Apollo Pharmacy",
+                        "Compounded_name": "Add Name"
+                      },
+                      "hospital_id": "59d04ca30d6fca3b9d23756f"
+                    }
+                  ],
+                  "count": 4
+                }  
+        204:
+          description: No such hospital
+    post:
+      body:
+        application/json:
+            example: |
+              {
+                "name" : "Ollopa",
+                "email" : "contact@ollopa.com",
+                "phone" : "+12017367833",
+                "address" : {
+                  "street_1" : "123 Hyper Drive",
+                  "street_2" : "Suite 99999",
+                  "city" : "New York",
+                  "state" : "NY",
+                  "zip" : "10001",
+                  "zip4" : "1234"
+                },
+                "formulary": [
+                  {
+                    "margin" : "10%",
+                    "product_id" : "59d196dac3ebad4aa4566c95",
+                    "available_options" : [
+                      {
+                        "price" : "37.7",
+                        "strength" : "6 pack",
+                        "retail_price" : "37.66"
+                      }
+                    ]
+                  }
+                ],
+                "pharmacies": {
+                  "Retail": "59d196dac3ebad1aa4566c96",
+                  "Compounded": "59d196dac3ebad1aa4566c96",
+                  "502b": "59d196dac3ebad1aa4566c96"
+                },
+                "pims_id": "12345",
+                "clinic_id": "12345",
+                "owner_name": "",
+                "parent_account": ""
+              }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"hospital_id": "59d04ca30d6fca3b9d23756f"}
+    /{hospital_id}:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "name": "Apollo",
+                    "pims_id": "123456",
+                    "owner_name": "Jeff",
+                    "parent_account": "Apollo Care Hospitals",
+                    "clinic_id": "123456",
+                    "email": "contact@apollo.com",
+                    "phone": "12017367834",
+                    "address": {
+                      "street_1": "123 Hyper Drive",
+                      "street_2": "Suite 99999",
+                      "city": "New York",
+                      "state": "NY",
+                      "zip": "10001",
+                      "zip4": "1234"
+                    },
+                    "pharmacies": {
+                      "502b": "5a2ad1bcf09d2051c0b48e81",
+                      "Retail": "5a13f6679851a3fb0ecbcb5e",
+                      "Compounded": "5a3625cb5474eb0010955aa6",
+                      "502b_name": "CVS Pharmacy",
+                      "Retail_name": "Apollo Pharmacy",
+                      "Compounded_name": "Add Name"
+                    },
+                    "hospital_id": "59d04ca30d6fca3b9d23756f"
+                  }
+      put:
+        body:
+          application/json:
+              example: |
+                {
+                  "name" : "Ollopa",
+                  "email" : "contact@ollopa.com",
+                  "phone" : "+12017367833",
+                  "address" : {
+                    "street_1" : "123 Hyper Drive",
+                    "street_2" : "Suite 99999",
+                    "city" : "New York",
+                    "state" : "NY",
+                    "zip" : "10001",
+                    "zip4" : "1234"
+                  },
+                  "formulary": [
+                    {
+                      "margin" : "10%",
+                      "product_id" : "59d196dac3ebad4aa4566c95",
+                      "available_options" : [
+                        {
+                          "price" : "37.7",
+                          "strength" : "6 pack",
+                          "retail_price" : "37.66"
+                        }
+                      ]
+                    }
+                  ],
+                  "pharmacies": {
+                    "Retail": "59d196dac3ebad1aa4566c96",
+                    "Compounded": "59d196dac3ebad1aa4566c96",
+                    "502b": "59d196dac3ebad1aa4566c96"
+                  },
+                  "pims_id": "12345",
+                  "clinic_id": "12345",
+                  "owner_name": "",
+                  "parent_account": ""
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"updated": true}
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"deleted": true}
+  /orders:
+    get:
+      queryParameters:
+        offset:
+          required: false
+          example: 10
+        limit:
+          required: false
+          example: 5
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "orders": [
+                    {
+                      "vet_id": "59d0430c0d6fca1448956297",
+                      "client_id": "5a059a22618674000100033b",
+                      "patient_id": "5a059b956186740001000357",
+                      "hospital_id": "5a33f66b5ef557000f3bd8a2",
+                      "subtotal_price": "57.55",
+                      "shipping_method": "Ground",
+                      "shipping_amount": "4.99",
+                      "box_no": "1",
+                      "shipping_address": {
+                        "street_1": "9 Garrison Ave",
+                        "street_2": "34",
+                        "city": "Jersey City",
+                        "state": "NJ",
+                        "zip": "07305",
+                        "zip4": "8114"
+                      },
+                      "tax": "2.83",
+                      "total_price": "65.37",
+                      "type": "subscription",
+                      "order_number": 100001,
+                      "order_status": "pending",
+                      "pharmacy_id": "5a13f6679851a3fb0ecbcb5e",
+                      "shipping_date": "2017-12-03 19:00:14.175000",
+                      "delivery_date": null,
+                      "tracking_number": "234584",
+                      "feedback": {
+                        "comments": "fdsd",
+                        "is_satisfied": true,
+                        "timestamp": "2017-12-13 06:56:38.196000",
+                        "is_feedback_read": true
+                      },
+                      "product_id": null,
+                      "auto_refill": null,
+                      "order_id": "5a2449bed3f8a20010bd3c1e",
+                      "order_date": "2017-12-03 19:00:14.174000",
+                      "client_name": "Dawson Kalliam",
+                      "email": "lehrer@yopmail.com",
+                      "phone": "2017367833",
+                      "patient_name": "Rocky",
+                      "date_of_birth": "2017-05-16 00:00:00",
+                      "vet_name": "Robert Jordan0000",
+                      "hospital_name": "Mercy11",
+                      "pharmacy_name": "Apollo Pharmacy"
+                    }
+                  ],
+                  "count": 20
+                }
+    post:
+      body:
+        application/json:
+            example: |
+              {
+                "vet_id": "59d0430c0d6fca1448956297",
+                "client_id": "5a059a22618674000100033b",
+                "patient_id": "5a059a22618674000100033e",
+                "hospital_id": "59d04ca30d6fca3b9d23756f",
+                "pharmacy_id": "59d04ca30d6fca3b9d12345d",
+                "subscription_id": "",
+                "order_type": "",
+                "order_contents": [
+                  {
+                    "product_id": "5a51400d866e22300c345bb5",
+                    "strength": "16 pack",
+                    "quantity": 12,
+                    "expires": "2017-09-28",
+                    "auto_refill": true,
+                    "refills": 2
+                  }
+                ],
+                "subtotal_price": "22.99",
+                "shipping_method": "Ground",
+                "shipping_amount": "0.99",
+                "shipping_date": "",
+                "delivery_date": "",
+                "shipping_address": {
+                  "street_1": "302 Bryan Avenue",
+                  "street_2": "#15",
+                  "city": "Roseville",
+                  "state": "MN",
+                  "zip": "55113",
+                  "zip4": "6335"
+                },
+                "tax": "7.99",
+                "total_price": "30.99",
+                "box_name": "",
+                "tracking_number": "",
+                "order_number": 123456
+              }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"order_id": "5a2449bed3f8a20010bd3c1e"}
+    /{order_id}:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "_id": "5a4f8da35e3d590010cf4fc8",
+                    "vet_id": "59d0430c0d6fca1448956297",
+                    "client_id": "5a4f8bdd5e3d59000fcf4f53",
+                    "patient_id": "5a4f8bde5e3d590010cf4f88",
+                    "hospital_id": "5a33f66b5ef557000f3bd8a2",
+                    "treatment_plan_id": "5a342ff5b6e45e0010d7e7ee",
+                    "order_contents": [
+                      {
+                        "product_id": "59d196dac3ebad4aa4566c95",
+                        "product_name": "Sentinel Flavor Tabs",
+                        "size": "6 pack",
+                        "quantity": 2,
+                        "instructions": "as",
+                        "notes": "",
+                        "product_price": "75.28",
+                        "image_url": "https://www.1800petmeds.com/images/products/group/Sentinel_group_420.jpg",
+                        "type": "RX"
+                      }
+                    ],
+                    "subtotal_price": 630.4,
+                    "shipping_method": "Ground",
+                    "shipping_amount": "5.99",
+                    "shipping_address": {
+                      "street_1": "ghjgh",
+                      "street_2": "jkh",
+                      "city": "hjg",
+                      "state": "AK",
+                      "zip": "45646",
+                      "zip4": "8114"
+                    },
+                    "tax": "2.83",
+                    "total_price": 639.22,
+                    "type": "subscription",
+                    "subscription_id": "5a4f8da35e3d590010cf4fc7",
+                    "pharmacy_type": "Rx",
+                    "pharmacy_id": "5a2ad1bcf09d2051c0b48e81",
+                    "order_number": 100021,
+                    "order_status": "processing",
+                    "shipping_date": "2018-01-09 14:37:23.241000",
+                    "delivery_date": null,
+                    "box_no": "1",
+                    "card": {
+                      "last_4": "3132",
+                      "expiry_date": "02/19",
+                      "cardholder_name": "fhg gfg "
+                    },
+                    "payment_status": "declined",
+                    "client_name": "sfds sdfd",
+                    "patient_name": "dfsf",
+                    "vet_name": "Robert Jordan0000",
+                    "hospital_name": "Mercy11",
+                    "pharmacy_name": "CVS Pharmacy"
+                  }
+      put:
+        body:
+          application/json:
+              example: |
+                {
+                  "vet_id": "59d0430c0d6fca1448956297",
+                  "client_id": "5a059a22618674000100033b",
+                  "patient_id": "5a059a22618674000100033e",
+                  "hospital_id": "59d04ca30d6fca3b9d23756f",
+                  "pharmacy_id": "59d04ca30d6fca3b9d12345d",
+                  "subscription_id": "",
+                  "order_type": "",
+                  "order_contents": [
+                    {
+                      "product_id": "5a51400d866e22300c345bb5",
+                      "strength": "16 pack",
+                      "quantity": 12,
+                      "expires": "2017-09-28",
+                      "auto_refill": true,
+                      "refills": 2
+                    }
+                  ],
+                  "subtotal_price": "22.99",
+                  "shipping_method": "Ground",
+                  "shipping_amount": "0.99",
+                  "shipping_date": "",
+                  "delivery_date": "",
+                  "shipping_address": {
+                    "street_1": "302 Bryan Avenue",
+                    "street_2": "#15",
+                    "city": "Roseville",
+                    "state": "MN",
+                    "zip": "55113",
+                    "zip4": "6335"
+                  },
+                  "tax": "7.99",
+                  "total_price": "30.99",
+                  "box_name": "",
+                  "tracking_number": "",
+                  "order_number": 123456
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"updated": true}
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"deleted": true}
+  /patients:
+    get:
+      queryParameters:
+        offset:
+          required: false
+          example: 10
+        limit:
+          required: false
+          example: 5
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "patients": [
+                    {
+                      "breed": "German Shepherd",
+                      "birthday": "2017-05-16 00:00:00",
+                      "species": "canine",
+                      "hospital_id": "59d04ca30d6fca3b9d23756f",
+                      "gender": "male",
+                      "name": "Rocky",
+                      "vet_id": "59d0430c0d6fca1448956297",
+                      "client_id": "5a059a22618674000100033b",
+                      "weight": "15",
+                      "patient_id": "5a059b956186740001000357",
+                      "client_name": "Dawson Kalliam",
+                      "vet_name": "Dr. Robert Jordan0000",
+                      "hospital_name": "Apollo"
+                    }
+                  ],
+                  "count": 3  
+                }
+    post:
+      body:
+        application/json:
+            example: |
+             {
+                "breed": "Siamese",
+                "species": "feline",
+                "hospital_id": "59d04ca30d6fca3b9d23756f",
+                "gender": "female",
+                "name": "Poppy",
+                "vet_id": "59d0430c0d6fca1448956297",
+                "client_id": "5a059a22618674000100033b",
+                "weight": "11",
+                "color": "black",
+                "birthday": "2015-10-10"
+              }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"hospital_id": "59d04ca30d6fca3b9d23756f"}
+    /patient_id:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "breed": "German Shepherd",
+                    "birthday": "2017-05-16 00:00:00",
+                    "species": "canine",
+                    "hospital_id": "59d04ca30d6fca3b9d23756f",
+                    "gender": "male",
+                    "age": "7",
+                    "name": "Rocky",
+                    "vet_id": "59d0430c0d6fca1448956297",
+                    "client_id": "5a059a22618674000100033b",
+                    "weight": "15",
+                    "client_name": "Dawson Kalliam",
+                    "email": "lehrer@yopmail.com",
+                    "phone": {
+                      "cell": "2017367833"
+                    },
+                    "shipping_address": {
+                      "street_1": "9 Garrison Ave",
+                      "street_2": "34",
+                      "city": "Jersey City",
+                      "state": "NJ",
+                      "zip": "07306",
+                      "zip4": "8114"
+                    },
+                    "vet_name": "Dr. Robert Jordan0000",
+                    "hospital_name": "Apollo"
+                  }
+      put:
+        body:
+          application/json:
+              example: |
+               {
+                  "breed": "Siamese",
+                  "species": "feline",
+                  "hospital_id": "59d04ca30d6fca3b9d23756f",
+                  "gender": "female",
+                  "name": "Poppy",
+                  "vet_id": "59d0430c0d6fca1448956297",
+                  "client_id": "5a059a22618674000100033b",
+                  "weight": "11",
+                  "color": "black",
+                  "birthday": "2015-10-10",
+                  "is_spayed/neutered": "",
+                  "microchip": "",
+                  "flea_control": "",
+                  "heartworm_prevention": "",
+                  "food_brand": "",
+                  "is_service_animal": ""
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"updated": true}
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"deleted": true}
+  /pharmacies:
+    get:
+      queryParameters:
+        offset:
+          required: false
+          example: 10
+        limit:
+          required: false
+          example: 5
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                    "pharmacies": [
+                        {
+                            "name": "Apollo Pharmacy",
+                            "email": "test_pharmacy@droicelabs.com",
+                            "phone": "3424234432",
+                            "type": "retail",
+                            "status": "Active",
+                            "address": {
+                                "street_1": "710 W 5th St",
+                                "city": "Austin",
+                                "state": "TX",
+                                "zip": "78701"
+                            },
+                            "hospitals": [
+                                {
+                                    "name": "Apollo"
+                                },
+                                {
+                                    "name": "Mount Sinai"
+                                },
+                                {
+                                    "name": "Mercy11"
+                                }
+                            ],
+                            "pharmacy_id": "5a13f6679851a3fb0ecbcb5e"
+                        }
+                    ],
+                    "count": 5
+                }
+    post:
+      body:
+        application/json:
+            example: |
+              {
+                  "name": "Ollopa Pharmacy",
+                  "email": "verytest_pharmacy@droicelabs.com",
+                  "phone": "34234234234",
+                  "address": {
+                      "street_1": "710 W 5th St",
+                      "city": "Austin",
+                      "state": "TX",
+                      "zip": "78701"
+                  }
+              }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"pharmacy_id": "5a13f6679851a3fb0ecbcb5e"}
+    /pharmacy_id:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                      "name": "Apollo Pharmacy",
+                      "email": "test_pharmacy@droicelabs.com",
+                      "phone": "3424234432",
+                      "fax": "(201) 736-7833",
+                      "type": "retail",
+                      "status": "Active",
+                      "address": {
+                          "street_1": "710 W 5th St",
+                          "city": "Austin",
+                          "state": "TX",
+                          "zip": "78701"
+                      }
+                  }
+      put:
+        body:
+          application/json:
+              example: |
+                {
+                    "name": "Ollopa Pharmacy",
+                    "email": "verytest_pharmacy@droicelabs.com",
+                    "phone": "34234234234",
+                    "address": {
+                        "street_1": "710 W 5th St",
+                        "city": "Austin",
+                        "state": "TX",
+                        "zip": "78701"
+                    }
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"updated": true}
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"deleted": true}
+  /products:
+    get:
+      queryParameters:
+        offset:
+          required: false
+          example: 10
+        limit:
+          required: false
+          example: 5
+        type:
+          required: false
+          type: string
+        category:
+          required: false
+          type: string
+        brand:
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                    "products": [
+                        {
+                            "product_name": "Arthro-IONX",
+                            "image_url": "https://images-na.ssl-images-amazon.com/images/I/4197CuIS0gL.jpg",
+                            "description": "",
+                            "type": "RX",
+                            "category": "Spray",
+                            "available_options": [
+                                {
+                                    "strength": "4 oz",
+                                    "price": "29.99"
+                                }
+                            ],
+                            "manufacturer_name": "VETiONX",
+                            "product_id": "59d19179c3ebad4aa4566c90"
+                        }
+                    ],
+                    "count": 8864,
+                    "brands": [
+                        "21st Century HealthCare Inc.",
+                        "A & B Welding Supply Co."
+                    ],
+                    "categories": [
+                        "Spray",
+                        "Tablets"
+                    ]
+                }
+    post:
+      body:
+        application/json:
+            example: |
+              {
+                  "product_name": "Arthro-IONX TEST",
+                  "ndc": "50364-014-04",
+                  "stc": "",
+                  "description": "",
+                  "type": "OTC",
+                  "category": "Spray",
+                  "available_options": [
+                      {
+                          "strength": "4 oz",
+                          "price": "29.99"
+                      }
+                  ],
+                  "manufacturer_name": "VETiONX"
+              }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"product_id": "59d19179c3ebad4aa4566c90"}
+    /product_id:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                      "product_name": "HexaDerm Max",
+                      "image_url": "https://images-na.ssl-images-amazon.com/images/I/51Ppy0PZ74L._SX522_.jpg",
+                      "ndc": "86056-012-16",
+                      "stc": "",
+                      "description": "",
+                      "type": "OTC",
+                      "category": "Shampoo",
+                      "available_options": [
+                          {
+                              "strength": "8 oz.",
+                              "price": "19.99"
+                          }
+                      ],
+                      "manufacturer_name": "VetBiotek, Inc."
+                  }
+      put:
+        body:
+          application/json:
+              example: |
+                {
+                  "product_name": "Arthro-IONX TEST",
+                  "image_url": "https://images-na.ssl-images-amazon.com/images/I/51Ppy0PZ74L._SX522_.jpg",
+                  "ndc": "50364-014-04",
+                  "stc": "",
+                  "description": "",
+                  "type": "OTC",
+                  "category": "Spray",
+                  "available_options": [
+                      {
+                          "strength": "4 oz",
+                          "price": "29.99"
+                      }
+                  ],
+                  "manufacturer_name": "VETiONX"
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"updated": true}
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"deleted": true}
+
+  /upload:
+    description: Upload products in specified csv file format
+    post:
+      body:
+        application/json:
+            example: |
+              {"s3_file": ""}
+  /vets:
+    get:
+      queryParameters:
+        offset:
+          required: false
+          example: 10
+        limit:
+          required: false
+          example: 5
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                    "vets": [
+                        {
+                            "hospital_id": "5a33f66b5ef557000f3bd8a2",
+                            "phone": {
+                                "cell": "2017367833",
+                                "work": "2017367834"
+                            },
+                            "first_name": "Robert",
+                            "date_of_birth": "1982-11-06 00:00:00",
+                            "last_name": "Jordan0000",
+                            "gender": "Male",
+                            "image_url": "http://www.nndb.com/people/965/000043836/robert-jordan.jpg",
+                            "email_address": "vet@zolutia.com",
+                            "address": {
+                                "street_1": "Roast Meat Hill Rd",
+                                "street_2": "Apt 6",
+                                "city": "Killingworth",
+                                "state": "CT",
+                                "zip": "06419"
+                            },
+                            "dea": "fdgfdgfdg",
+                            "pims_id": "123456",
+                            "state_license": "312317",
+                            "specialty": "Opthalmology",
+                            "suffix": "Dr.",
+                            "status": "Active",
+                            "vet_id": "59d0430c0d6fca1448956297",
+                            "hospital_name": "Mercy11"
+                        }
+                    ],
+                    "count": 3
+                }
+    post:
+      body:
+        application/json:
+            example: |
+              {
+                  "suffix": "Dr.",
+                  "hospital_id": "59d04ca30d6fca3b9d23756f",
+                  "phone": {
+                      "work": "2017367833",
+                      "cell": "(201) 736-7833"
+                  },
+                  "first_name": "John",
+                  "last_name": "Dorian",
+                  "image_url": "http://www.nndb.com/people/965/000043836/robert-jordan.jpg",
+                  "email_address": "jd@sacredheart.com",
+                  "address": {
+                      "zip": "84101",
+                      "state": "UT",
+                      "street_1": "Fried Veggies Drive",
+                      "zip4": "",
+                      "city": "Salt Lake City",
+                      "street_2": ""
+                  },
+                  "is_hospital_admin": false,
+                  "specialty": "vet",
+                  "date_of_birth": "1978-10-09",
+                  "dea": "",
+                  "pims_id": "",
+                  "gender": "",
+                  "state_license": ""
+              }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"vet_id": "5a33f66b5ef557000f3bd8a2"}
+    /vet_id:
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                      "hospital_id": "5a33f66b5ef557000f3bd8a2",
+                      "phone": {
+                          "cell": "2017367833",
+                          "work": "2017367834"
+                      },
+                      "first_name": "Robert",
+                      "date_of_birth": "1982-11-06 00:00:00",
+                      "last_name": "Jordan0000",
+                      "gender": "Male",
+                      "image_url": "http://www.nndb.com/people/965/000043836/robert-jordan.jpg",
+                      "email_address": "vet@zolutia.com",
+                      "address": {
+                          "street_1": "Roast Meat Hill Rd",
+                          "street_2": "Apt 6",
+                          "city": "Killingworth",
+                          "state": "CT",
+                          "zip": "06419"
+                      },
+                      "state_license": "312317",
+                      "is_hospital_admin": true,
+                      "specialty": "Opthalmology",
+                      "suffix": "Dr.",
+                      "status": "Active",
+                      "hospital_name": "Mercy11"
+                  }
+      put:
+        body:
+          application/json:
+              example: |
+                {
+                  "suffix": "Dr.",
+                  "hospital_id": "59d04ca30d6fca3b9d23756f",
+                  "phone": {
+                      "work": "2017367833",
+                      "cell": "(201) 736-7833"
+                  },
+                  "first_name": "John",
+                  "last_name": "Dorian",
+                  "image_url": "http://www.nndb.com/people/965/000043836/robert-jordan.jpg",
+                  "email_address": "jd@sacredheart.com",
+                  "address": {
+                      "zip": "84101",
+                      "state": "UT",
+                      "street_1": "Fried Veggies Drive",
+                      "zip4": "",
+                      "city": "Salt Lake City",
+                      "street_2": ""
+                  },
+                  "is_hospital_admin": false,
+                  "specialty": "vet",
+                  "date_of_birth": "1978-10-09",
+                  "dea": "",
+                  "pims_id": "",
+                  "gender": "",
+                  "state_license": ""
+                }
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"updated": true}
+      delete:
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"deleted": true}
+
