@@ -3,7 +3,7 @@ services:
 
   search:
     container_name: "zolutia_search"
-    image: gcr.io/zolr-189106/zol-search:test
+    image: gcr.io/copper-oven-193619/zol-search:test
     restart: always
     links:
         - mongodb:mongodb
@@ -12,7 +12,7 @@ services:
 
   auth:
     container_name: "zolutia_auth"
-    image: gcr.io/zolr-189106/zol-auth:test
+    image: gcr.io/copper-oven-193619/zol-auth:test
     restart: always
     links:
         - mongodb:mongodb
@@ -21,7 +21,7 @@ services:
 
   notification:
     container_name: "zolutia_notification"
-    image: gcr.io/zolr-189106/zol-notifications:test
+    image: gcr.io/copper-oven-193619/zol-notifications:test
     restart: always
     links:
         - mongodb:mongodb
@@ -30,7 +30,7 @@ services:
 
   payment:
     container_name: "zolutia_payment"
-    image: gcr.io/zolr-189106/zol-payments:test
+    image: gcr.io/copper-oven-193619/zol-payments:test
     restart: always
     links:
         - mongodb:mongodb
@@ -39,7 +39,7 @@ services:
 
   shipping:
     container_name: "zolutia_shipping"
-    image: gcr.io/zolr-189106/zol-shipping:test
+    image: gcr.io/copper-oven-193619/zol-shipping:test
     restart: always
     links:
         - mongodb:mongodb
@@ -48,7 +48,7 @@ services:
      
   scheduler1:
     container_name: "zolutia_scheduler1"
-    image: gcr.io/zolr-189106/zol-scheduler1:test
+    image: gcr.io/copper-oven-193619/zol-scheduler1:test
     restart: always
     links:
         - mongodb:mongodb
@@ -58,7 +58,7 @@ services:
      
   scheduler2:
     container_name: "zolutia_scheduler2"
-    image: gcr.io/zolr-189106/zol-scheduler2:test
+    image: gcr.io/copper-oven-193619/zol-scheduler2:test
     restart: always
     links:
         - mongodb:mongodb
@@ -68,7 +68,7 @@ services:
 
   act:
     container_name: "zolutia_act"
-    image: gcr.io/zolr-189106/zol-act:test
+    image: gcr.io/copper-oven-193619/zol-act:test
     ports:
     - "5000:5000"
     restart: always
@@ -91,7 +91,7 @@ services:
 
   backend:
     container_name: "zolutia_backend"
-    image: gcr.io/zolr-189106/zol-backend:test
+    image: gcr.io/copper-oven-193619/zol-backend:test
     restart: always
     links:
         - mongodb:mongodb
@@ -107,7 +107,7 @@ services:
 
   frontend:
     container_name: "zolutia_frontend"
-    image: gcr.io/zolr-189106/zol-frontend:test
+    image: gcr.io/copper-oven-193619/zol-frontend:test
     restart: always
     ports:
     - "80:80"
